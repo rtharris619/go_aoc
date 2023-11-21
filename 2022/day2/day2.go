@@ -1,52 +1,20 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"net/http"
 	"strings"
 
-	"github.com/spf13/viper"
+	"aoc/helper"
 )
 
-func viperEnvVariable(key string) string {
-	viper.SetConfigFile("../../.env")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
-	}
-	value, ok := viper.Get(key).(string)
-	if !ok {
-		panic("Invalid type assertion")
-	}
-	return value
-}
-
-func get_file_input() map[string]int {
+func mapFileContents() map[string]int {
 
 	result := make(map[string]int)
 
-	client := http.Client{}
-	req, err := http.NewRequest("GET", "https://adventofcode.com/2022/day/2/input", nil)
+	var fileContents = helper.GetFileContents(2022, 2)
 
-	if err != nil {
-		panic(err)
-	}
-
-	session_env := viperEnvVariable("SESSION")
-
-	cookieSession := http.Cookie{Name: "session", Value: session_env}
-	req.AddCookie(&cookieSession)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	scanner := bufio.NewScanner(resp.Body)
-	for i := 0; scanner.Scan(); i++ {
-		var line = scanner.Text()
+	for i := 0; i < len(fileContents); i++ {
+		var line = fileContents[i]
 		var key = strings.ReplaceAll(line, " ", "")
 
 		if value, ok := result[key]; ok {
@@ -58,14 +26,10 @@ func get_file_input() map[string]int {
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
-
 	return result
 }
 
-func solve_sample() {
+func solveSample() {
 
 	// A = ROCK = X (1)
 	// B = PAPER = Y (2)
@@ -152,9 +116,10 @@ func solve(input map[string]int) {
 }
 
 func main() {
-	//solve_sample()
-	var file_input = get_file_input()
-	fmt.Println(file_input)
+	//solveSample()
+	var fileContents = mapFileContents()
+	fmt.Println(fileContents)
 
-	solve(file_input)
+	solve(fileContents)
+
 }
