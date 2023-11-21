@@ -19,7 +19,7 @@ func read_file() []int {
 		fmt.Println("Error reading file")
 	}
 
-	defer file.Close() // must check what this does...
+	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
