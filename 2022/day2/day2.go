@@ -115,6 +115,14 @@ func solve(input map[string]int) {
 	println("Total Points:", total)
 }
 
+func solveSample2() {
+
+}
+
+func solvePart2(input map[string]int) {
+
+}
+
 func main() {
 	//solveSample()
 	var fileContents = mapFileContents()
